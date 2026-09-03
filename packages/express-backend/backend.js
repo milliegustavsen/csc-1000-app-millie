@@ -33,7 +33,22 @@ const users = {
   ],
 };
 
+const findUserByName = (name) => {
+  return users["users_list"].filter((user) => user["name"] === name);
+};
+
 app.use(express.json());
+
+app.get("/users", (req, res) => {
+  const name = req.query.name;
+  if (name != undefined) {
+    let result = findUserByName(name);
+    result = { users_list: result };
+    res.send(result);
+  } else {
+    res.send(users);
+  }
+});
 
 app.get("/", (req, res) => {
   res.send(users);
@@ -48,3 +63,4 @@ app.listen(port, () => {
 });
 
 // deleted this from json but might need it? "type": "commonjs",
+// to debug: $env:DEBUG='express:router'; npx nodemon backend.js
