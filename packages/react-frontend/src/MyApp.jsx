@@ -13,17 +13,14 @@ function MyApp() {
     setCharacters(updated);
   }
 
-  function updateList(person) {
-    setCharacters([...characters, person]);
-  }
-
   function fetchUsers() {
     const promise = fetch("http://localhost:8000/users");
     return promise;
   }
 
-  function postUser(person) {
-    const promise = fetch("Http://localhost:8000/users", {
+  // added await
+  async function postUser(person) {
+    const promise = await fetch("Http://localhost:8000/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +28,11 @@ function MyApp() {
       body: JSON.stringify(person),
     });
 
-    return promise;
+    if (promise.status != 201) {
+      throw new Error(`User was not created (status ${promise.status})`);
+    }
+
+    return promise.json();
   }
 
   function updateList(person) {
