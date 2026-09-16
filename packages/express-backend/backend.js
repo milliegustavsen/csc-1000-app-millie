@@ -41,17 +41,6 @@ const findUserByName = (name) => {
   return users["users_list"].filter((user) => user["name"] === name);
 };
 
-// app.get("/users", (req, res) => {
-//   const name = req.query.name;
-//   if (name != undefined) {
-//     let result = findUserByName(name);
-//     result = { users_list: result };
-//     res.send(result);
-//   } else {
-//     res.send(users);
-//   }
-// });
-
 const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
 
@@ -66,6 +55,7 @@ app.get("/users/:id", (req, res) => {
 });
 
 const addUser = (user) => {
+  user.id = Math.random() * 100000;
   users["users_list"].push(user);
   return user;
 };
@@ -77,7 +67,6 @@ app.post("/users", (req, res) => {
   //res.status(201).send("User Added!")
   //res.send();
 });
-
 
 const deleteUserById = (id) => {
   const index = users.users_list.findIndex((user) => user.id === id);
@@ -122,10 +111,6 @@ app.get("/users", (req, res) => {
 app.get("/", (req, res) => {
   res.send(users);
 });
-
-// app.get("/users", (req, res) => {
-//   res.send(users);
-// });
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
