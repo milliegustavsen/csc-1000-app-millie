@@ -7,9 +7,17 @@ function MyApp() {
   const [characters, setCharacters] = useState([]);
 
   function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
+    // const updated = characters.filter((character, i) => {
+    //   return i !== index;
+    // });
+    const updated = fetch("Http://localhost:8000/users/:id", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(index),
     });
+
     setCharacters(updated);
   }
 
@@ -28,7 +36,7 @@ function MyApp() {
       body: JSON.stringify(person),
     });
 
-    if (promise.status != 201) {
+    if (promise.status !== 201) {
       throw new Error(`User was not created (status ${promise.status})`);
     }
 

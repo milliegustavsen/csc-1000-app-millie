@@ -55,7 +55,8 @@ app.get("/users/:id", (req, res) => {
 });
 
 const addUser = (user) => {
-  user.id = Math.random() * 100000;
+  // made id into a string
+  user.id = String(Math.floor(Math.random() * 100000));
   users["users_list"].push(user);
   return user;
 };
@@ -80,7 +81,7 @@ app.delete("/users/:id", (req, res) => {
   if (result === undefined) {
     res.status(404).send("Resource not found.");
   } else {
-    res.status(200).send("user deleted");
+    res.status(204).send();
   }
 });
 
