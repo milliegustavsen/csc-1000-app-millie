@@ -6,19 +6,30 @@ import Form from "./Form";
 function MyApp() {
   const [characters, setCharacters] = useState([]);
 
-  function removeOneCharacter(index) {
+  function removeOneCharacter(id) {
     // const updated = characters.filter((character, i) => {
     //   return i !== index;
     // });
-    const updated = fetch("Http://localhost:8000/users/:id", {
+    const updated = fetch(`http://localhost:8000/users/${id}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(index),
-    });
+      // headers: {
+      //   "Content-Type": "application/json",
+      // },
+      // body: JSON.stringify(person),
+    })
 
-    setCharacters(updated);
+    .then((response) => {
+      if (response.status !== 204) {
+        throw new Error(`User was not deleted (status ${response.status})`);
+      }
+
+      setCharacters((currentCharacters) =>
+        currentCharacters.filter((character) => character.id !== id)
+      );
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   function fetchUsers() {
@@ -43,12 +54,23 @@ function MyApp() {
     return promise.json();
   }
 
+  // function updateList(person) {
+  //   postUser(person)
+  //   .then(() => setCharacters([...characters, person]))
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
+  // }
+
   function updateList(person) {
     postUser(person)
-    .then(() => setCharacters([...characters, person]))
-    .catch((error) => {
-      console.log(error);
-    });
+    .then((createdUser) => {
+      setCharacters((currentCharacters) => [
+        ...currentCharacters,
+        createdUser,
+      ]);
+    })
+    .catch((error) => console.error(error));
   }
 
   useEffect(() => {
