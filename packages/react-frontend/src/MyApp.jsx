@@ -6,11 +6,11 @@ import Form from "./Form";
 function MyApp() {
   const [characters, setCharacters] = useState([]);
 
-  function removeOneCharacter(id) {
+  function removeOneCharacter(_id) {
     // const updated = characters.filter((character, i) => {
     //   return i !== index;
     // });
-    const updated = fetch(`http://localhost:8000/users/${id}`, {
+    const updated = fetch(`http://localhost:8000/users/${_id}`, {
       method: "DELETE",
       // headers: {
       //   "Content-Type": "application/json",
@@ -24,7 +24,7 @@ function MyApp() {
       }
 
       setCharacters((currentCharacters) =>
-        currentCharacters.filter((character) => character.id !== id)
+        currentCharacters.filter((character) => character._id !== _id)
       );
     })
     .catch((error) => {
